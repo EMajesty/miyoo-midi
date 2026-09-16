@@ -1,0 +1,15 @@
+# Cross-compiled utilities
+/midi-baud
+/mtd-patch
+*.o
+
+# Device images and flash dumps
+*.bin
+*.img
+*.dump
+*-dump.*
+
+# Generated and verification files
+/env-new.txt
+/env-old.txt
+/verify-*

@@ -1,6 +1,7 @@
 #include <asm/ioctls.h>
 #include <asm/termbits.h>
 #include <fcntl.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/ioctl.h>
@@ -49,16 +50,14 @@ int main(int argc, char **argv) {
     printf("reported input:  %u\n", tio.c_ispeed);
     printf("reported output: %u\n", tio.c_ospeed);
 
-    unsigned char test = 0x55;
-    printf("transmitting 0x55 continuously at 31250 baud\n");
+    uint8_t note_on[] = {0x90, 0x3C, 0x7F};
+    uint8_t note_off[] = {0x80, 0x3C, 0x00};
 
     for (;;) {
-        if (write(fd, &test, 1) != 1) {
-            perror("write");
-            break;
-        }
-
-        usleep(10000);
+        write(fd, note_on, sizeof(note_on));
+        usleep(500000);
+        write(fd, note_off, sizeof(note_off));
+        usleep(500000);
     }
 
     close(fd);

@@ -229,8 +229,11 @@ int main(int argc, char **argv) {
 
     write_exact(fd, replacement, BLOCK_SIZE, TARGET_OFFSET);
 
-    if (fsync(fd) < 0)
-        die("fsync");
+    /*
+     * No fsync(): this MTD character device returns EINVAL for fsync().
+     * Verification is performed by reading the programmed erase block
+     * back from the device and comparing it byte-for-byte.
+     */
 
     printf("Programming complete.\n");
     printf("Reading flash back for verification...\n");
